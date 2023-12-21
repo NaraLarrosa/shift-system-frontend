@@ -8,28 +8,23 @@ const NavLinks = props => {
   return (
     <ul className="nav-links">
       <li>
+        <NavLink to="/register" exact>
+          USERS
+        </NavLink>
+      </li>
+      <li>
         <NavLink to="/" exact>
-          ALL PRODUCTS
+          SPECIALISTS
         </NavLink>
       </li>
       <li>
-        <NavLink to="/product" exact>
-          ADD PRODUCT
+        <NavLink to="/" exact>
+          DOTORS
         </NavLink>
       </li>
       <li>
-        <NavLink to="/categories" exact>
-          ALL CATEGORIES
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/category" exact>
-          ADD CATEGORY
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/po" exact>
-          <i className="fas fa-shopping-cart"></i>
+        <NavLink to="/history/cancel/:pid" exact>
+          SHIFTS
         </NavLink>
       </li>
     </ul>

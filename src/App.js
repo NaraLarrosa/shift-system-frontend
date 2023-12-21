@@ -7,22 +7,22 @@ import {
 } from 'react-router-dom';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 
-import Users from './product/pages/Users';
+//import Users from './product/pages/Users';
+import AddSpecialty from './specialty/pages/AddSpecialty';
+import Specialties from './specialty/pages/Specialties';
 
 const App = () => { 
 let routes;
 
     routes = (
         <Switch>
-            <Route path="/register" exact>
-                <RegisterUser />
+            <Route path="/" exact>
+                <Specialties />
             </Route>
-            <Route path="/login">
-                <LoginUser />
+            <Route path="/add">
+                <AddSpecialty />
             </Route>
-            <Route path="/recoverPassword">
-                <RecoverPassword />
-            </Route>
+
             <Redirect to="/" />
         </Switch>
     );
