@@ -14,12 +14,12 @@ const NavLinks = props => {
       </li>
       <li>
         <NavLink to="/" exact>
-          SPECIALISTS
+          SPECIALTIES
         </NavLink>
       </li>
       <li>
         <NavLink to="/" exact>
-          DOTORS
+          DOCTORS
         </NavLink>
       </li>
       <li>
