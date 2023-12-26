@@ -5,7 +5,6 @@ import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
-import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 import {
   VALIDATOR_EMAIL,
   VALIDATOR_MINLENGTH,
@@ -86,6 +85,8 @@ const Auth = () => {
           }
         );
         auth.login(responseData.userId, responseData.token);
+        auth.token = responseData.token;
+        console.log(auth);
       } catch (err) {}
     } else {
       try {
@@ -122,7 +123,7 @@ const Auth = () => {
               type="text"
               label="Your Name"
               validators={[VALIDATOR_REQUIRE()]}
-              errorText="Please enter a name."
+              errorText="Please enter a valid name."
               onInput={inputHandler}
             />
           )}
@@ -133,7 +134,7 @@ const Auth = () => {
               type="text"
               label="Your Surname"
               validators={[VALIDATOR_REQUIRE()]}
-              errorText="Please enter a surname."
+              errorText="Please enter a valid surname."
               onInput={inputHandler}
             />
           )}
@@ -144,7 +145,7 @@ const Auth = () => {
               type="number"
               label="Your DNI"
               validators={[VALIDATOR_REQUIRE()]}
-              errorText="Please enter a dni."
+              errorText="Please enter a valid dni."
               onInput={inputHandler}
             />
           )}

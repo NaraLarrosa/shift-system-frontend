@@ -9,6 +9,7 @@ import MainNavigation from './shared/components/Navigation/MainNavigation';
 
 import Users from './user/pages/Users';
 import Specialties from './specialty/pages/Specialties';
+import Auth from './user/pages/Auth';
 // import Doctors from './doctor/pages/Doctors'
 // import Shifts from './doctor/pages/Shifts'
 
@@ -17,11 +18,14 @@ let routes;
 
     routes = (
         <Switch>
-            <Route path="/" exact>
+            <Route path="/users" exact>
                 <Users />
             </Route>
-            <Route path="/">
+            <Route path="/specialties" exact>
                 <Specialties />
+            </Route>
+            <Route path="/">
+                <Auth />
             </Route>
             {/* <Route path="/">
                 <Doctors />

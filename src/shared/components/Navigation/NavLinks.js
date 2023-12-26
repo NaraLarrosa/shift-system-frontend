@@ -8,22 +8,22 @@ const NavLinks = props => {
   return (
     <ul className="nav-links">
       <li>
-        <NavLink to="/register" exact>
+        <NavLink to="/users" exact>
           USERS
         </NavLink>
       </li>
       <li>
-        <NavLink to="/" exact>
+        <NavLink to="/specialties" exact>
           SPECIALTIES
         </NavLink>
       </li>
       <li>
-        <NavLink to="/" exact>
+        <NavLink to="/doctors" exact>
           DOCTORS
         </NavLink>
       </li>
       <li>
-        <NavLink to="/history/cancel/:pid" exact>
+        <NavLink to="/shifts" exact>
           SHIFTS
         </NavLink>
       </li>
