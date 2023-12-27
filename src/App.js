@@ -10,8 +10,8 @@ import MainNavigation from './shared/components/Navigation/MainNavigation';
 import Users from './user/pages/Users';
 import Specialties from './specialty/pages/Specialties';
 import Auth from './user/pages/Auth';
-// import Doctors from './doctor/pages/Doctors'
-// import Shifts from './doctor/pages/Shifts'
+import Doctors from './doctor/components/DoctorList';
+//import Shifts from './shift/pages/Shifts'
 
 const App = () => { 
 let routes;
@@ -27,10 +27,10 @@ let routes;
             <Route path="/">
                 <Auth />
             </Route>
-            {/* <Route path="/">
+            <Route path="/doctors">
                 <Doctors />
             </Route>
-            <Route path="/">
+            {/* <Route path="/shifts">
                 <Shifts />
             </Route> */}
             <Redirect to="/" />
