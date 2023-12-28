@@ -1,0 +1,49 @@
+.shift-item {
+  margin: 1rem 0;
+}
+
+.shift-item__content {
+  padding: 0;
+}
+
+.shift-item__info {
+  padding: 1rem;
+  text-align: center;
+}
+
+.shift-item__image {
+  width: 100%;
+  height: 12.5rem;
+  margin-right: 1.5rem;
+}
+
+.shift-item__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shift-item__info h2,
+.shift-item__info h3,
+.shift-item__info p {
+  margin: 0 0 0.5rem 0;
+}
+
+.shift-item__actions {
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid #ccc;
+}
+
+.shift-item__modal-content {
+  padding: 0;
+}
+
+.shift-item__modal-actions {
+  text-align: right;
+}
+
+.shift-item__actions button,
+.shift-item__actions a {
+  margin: 0.5rem;
+}

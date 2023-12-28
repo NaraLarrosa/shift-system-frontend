@@ -1,87 +1,120 @@
-import React, { useState, useContext } from 'react';
-
-import Card from '../../shared/components/UIElements/Card';
-import Button from '../../shared/components/FormElements/Button';
-import Modal from '../../shared/components/UIElements/Modal';
-import ErrorModal from '../../shared/components/UIElements/ErrorModal';
-import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
-import { AuthContext } from '../../shared/context/auth-context';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import './DoctorItem.css';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import Input from '../../shared/components/FormElements/Input';
+import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../../shared/util/validators';
+import '../pages/DoctorForm.css';
+import '../pages/DoctorForm.css';
 
-const DoctorItem = props => {
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const auth = useContext(AuthContext);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
+const DoctorItem = () => {
+  const { isLoading, error, clearError, sendRequest } = useHttpClient();
+  const [loadedDoctor, setLoadedDoctor] = useState();
+  const doctorId = useParams().doctorId;
 
-  const showDeleteWarningHandler = () => {
-    setShowConfirmModal(true);
-  };
+  const [inputHandler, setFormData] = useForm(
+    {
+      name: {
+        value: '',
+        isValid: false
+      },
+      surname: {
+        value: '',
+        isValid: false
+      },
+      dni: {
+        value: '',
+        isValid: false
+      }
+    },
+    false
+  );
 
-  const cancelDeleteHandler = () => {
-    setShowConfirmModal(false);
-  };
+  useEffect(() => {
+    const fetchDoctor = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/doctor/${doctorId}`
+        );
+        setLoadedDoctor(responseData.doctor);
+        setFormData(
+          {
+            name: {
+              value: responseData.doctor.name,
+              isValid: true
+            },
+            surname: {
+              value: responseData.doctor.surname,
+              isValid: true
+            },
+            dni: {
+              value: responseData.doctor.dni,
+              isValid: true
+            },
+            specialty: {
+              value: responseData.doctor.specialty,
+              isValid: true
+            }
+          },
+          true
+        );
+      } catch (err) {}
+    };
+    fetchDoctor();
+  }, [sendRequest, doctorId, setFormData]);
 
-  const confirmDeleteHandler = async () => {
-    setShowConfirmModal(false);
-    try {
-      await sendRequest(
-        `http://localhost:5000/api/doctor/${props.id}`,
-        'DELETE',
-        null
-      );
-      props.onDelete(props.id);
-    } catch (err) {}
-  };
 
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      <Modal
-        show={showConfirmModal}
-        onCancel={cancelDeleteHandler}
-        header="Are you sure?"
-        footerClass="doctor-item__modal-actions"
-        footer={
-          <React.Fragment>
-            <Button inverse onClick={cancelDeleteHandler}>
-              CANCEL
-            </Button>
-            <Button danger onClick={confirmDeleteHandler}>
-              DELETE
-            </Button>
-          </React.Fragment>
-        }
-      >
-        <p>
-          Do you want to proceed and delete this doctor? Please note that it
-          can't be undone thereafter.
-        </p>
-      </Modal>
-      <li className="doctor-item">
-        <Card className="doctor-item__content">
-          {isLoading && <LoadingSpinner asOverlay />}
-          <div className="doctor-item__info">
-            <h2>{props.dni}</h2>
-            <h2>{props.name}</h2>
-            <h3>{props.surname}</h3>
-            <p>{props.specialty}</p>
-          </div>
-          <div className="doctor-item__actions">
-            {auth.userId === props.creatorId && (
-              <Button to={`/doctors/${props.id}`}>EDIT</Button>
-            )}
-
-            {auth.userId === props.creatorId && (
-              <Button danger onClick={showDeleteWarningHandler}>
-                DELETE
-              </Button>
-            )}
-          </div>
-        </Card>
-      </li>
+        {!isLoading && loadedDoctor && (
+          <form className="doctor-form">
+            <Input
+              id="name"
+              element="input"
+              type="text"
+              label="Name"
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Please enter a valid name."
+              onInput={inputHandler}
+              initialValue={loadedDoctor.name}
+              initialValid={true}
+            />
+            <Input
+              id="surname"
+              element="textarea"
+              label="Surname"
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Please enter a valid surname."
+              onInput={inputHandler}
+              initialValue={loadedDoctor.surname}
+              initialValid={true}
+            />
+            <Input
+              id="dni"
+              element="number"
+              label="DNI"
+              validators={[VALIDATOR_MINLENGTH(7)]}
+              errorText="Please enter a valid DNI (min. 7 characters)."
+              onInput={inputHandler}
+              initialValue={loadedDoctor.dni}
+              initialValid={true}
+            />
+            <Input
+              id="specialty"
+              element="textarea"
+              label="Specialty"
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Please enter a valid specialty."
+              onInput={inputHandler}
+              initialValue={loadedDoctor.specialty}
+              initialValid={true}
+            />
+          </form>
+        )}
     </React.Fragment>
-  );
+  )
 };
 
 export default DoctorItem;

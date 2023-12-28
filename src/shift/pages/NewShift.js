@@ -12,27 +12,35 @@ import {
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
-import './DoctorForm.css';
+import './ShiftForm.css';
 
-const NewDoctor = () => {
+const NewShift = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, inputHandler] = useForm(
     {
-      name: {
+      day: {
+        value: '',
+        isValid: true
+      },
+      hour: {
         value: '',
         isValid: false
       },
-      surname: {
+      description: {
         value: '',
         isValid: false
       },
-      dni: {
+      available: {
         value: '',
         isValid: false
       },
-      specialty: {
-        value: null,
+      doctor: {
+        value: '',
+        isValid: false
+      },
+      canceled: {
+        value: '',
         isValid: false
       }
     },
@@ -41,65 +49,83 @@ const NewDoctor = () => {
 
   const history = useHistory();
 
-  const doctorSubmitHandler = async event => {
+  const shiftSubmitHandler = async event => {
     event.preventDefault();
     try {
       const formData = new FormData();
-      formData.append('name', formState.inputs.title.value);
-      formData.append('surname', formState.inputs.description.value);
-      formData.append('dni', formState.inputs.address.value);
-      formData.append('specialty', formState.inputs.image.value);
-      await sendRequest('http://localhost:5000/api/doctor', 'POST', formData, {
+      formData.append('day', formState.inputs.day.value);
+      formData.append('hour', formState.inputs.hour.value);
+      formData.append('description', formState.inputs.description.value);
+      formData.append('available', formState.inputs.available.value);
+      formData.append('doctor', formState.inputs.doctor.value);
+      formData.append('canceled', formState.inputs.canceled.value);
+      await sendRequest('http://localhost:5000/api/shift/create', 'POST', formData, {
         Authorization: 'Bearer ' + auth.token
       });
-      history.push('/doctors');
+      history.push('/');
     } catch (err) {}
   };
 
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      <form className="doctor-form" onSubmit={doctorSubmitHandler}>
+      <form className="shift-form" onSubmit={shiftSubmitHandler}>
         {isLoading && <LoadingSpinner asOverlay />}
         <Input
-          id="name"
+          id="day"
           element="input"
           type="text"
-          label="Name"
+          label="Day"
           validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter a valid name."
+          errorText="Please enter a valid day."
           onInput={inputHandler}
         />
         <Input
-          id="surname"
+          id="hour"
+          element="number"
+          label="Hour"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter a valid hour."
+          onInput={inputHandler}
+        />
+        <Input
+          id="description"
           element="textarea"
-          label="Surname"
+          label="Description"
           validators={[VALIDATOR_MINLENGTH(5)]}
-          errorText="Please enter a valid surname (at least 5 characters)."
+          errorText="Please enter a valid description."
           onInput={inputHandler}
         />
         <Input
-          id="dni"
+          id="available"
           element="input"
-          label="DNI"
+          label="Available"
           validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter a valid DNI."
+          errorText="Please enter true or false."
           onInput={inputHandler}
         />
         <Input
-          id="specialty"
+          id="doctor"
           element="input"
-          label="Specialty"
+          label="Doctor"
           validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter a valid specialty."
+          errorText="Please enter a valid doctor."
+          onInput={inputHandler}
+        />
+        <Input
+          id="canceled"
+          element="input"
+          label="Canceled"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter true or false."
           onInput={inputHandler}
         />
         <Button type="submit" disabled={!formState.isValid}>
-          ADD DOCTOR
+          ADD SHIFT
         </Button>
       </form>
     </React.Fragment>
   );
 };
 
-export default NewDoctor;
+export default NewShift;

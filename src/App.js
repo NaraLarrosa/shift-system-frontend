@@ -11,7 +11,7 @@ import Users from './user/pages/Users';
 import Specialties from './specialty/pages/Specialties';
 import Auth from './user/pages/Auth';
 import Doctors from './doctor/components/DoctorList';
-//import Shifts from './shift/pages/Shifts'
+import Shifts from './shift/pages/NewShift'
 
 const App = () => { 
 let routes;
@@ -30,9 +30,9 @@ let routes;
             <Route path="/doctors">
                 <Doctors />
             </Route>
-            {/* <Route path="/shifts">
+            <Route path="/shifts">
                 <Shifts />
-            </Route> */}
+            </Route>
             <Redirect to="/" />
         </Switch>
     );

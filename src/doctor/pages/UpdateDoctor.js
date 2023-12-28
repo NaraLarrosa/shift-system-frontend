@@ -44,7 +44,7 @@ const UpdateDoctor = () => {
     const fetchDoctor = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/places/${doctorId}`
+          `http://localhost:5000/api/doctor/update/${doctorId}`
         );
         setLoadedDoctor(responseData.doctor);
         setFormData(
