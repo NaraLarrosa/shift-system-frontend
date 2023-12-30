@@ -1,0 +1,51 @@
+.specialty-item {
+  margin: 1rem;
+  width: calc(45% - 2rem);
+  min-width: 17.5rem;
+}
+
+.specialty-item__content {
+  padding: 0;
+}
+
+.specialty-item__info {
+  padding: 1rem;
+  text-align: center;
+}
+
+.specialty-item__image {
+  width: 100%;
+  height: 12.5rem;
+  margin-right: 1.5rem;
+}
+
+.specialty-item__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.specialty-item__info h2,
+.specialty-item__info h3,
+.specialty-item__info p {
+  margin: 0 0 0.5rem 0;
+}
+
+.specialty-item__actions {
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid #ccc;
+}
+
+.specialty-item__modal-content {
+  padding: 0;
+}
+
+.specialty-item__modal-actions {
+  text-align: right;
+}
+
+.specialty-item__actions button,
+.specialty-item__actions a {
+  margin: 0.5rem;
+}

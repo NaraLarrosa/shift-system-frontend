@@ -13,13 +13,13 @@ const Specialties = () => {
     const fetchSpecialties = async () => {
       try {
         const headers = {
-          "Authorization": "Bearer "
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMxNjc4MDl9.Q92FQGpCZM2qZW0HNiwBWbhhrTx8j6qV2k8Q20Kb-p0"
         }
         const responseData = await sendRequest(
           'http://localhost:5000/api/specialty', "GET", null, headers
         );
 
-        setLoadedSpecialties(responseData.specialties);
+        setLoadedSpecialties(responseData);
 
       } catch (err) {}
     };

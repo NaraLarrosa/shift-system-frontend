@@ -1,5 +1,6 @@
 import React from 'react';
 
+import SpecialtyItem from './SpecialtyItem';
 import Card from '../../shared/components/UIElements/Card';
 import './SpecialtiesList.css';
 
@@ -8,7 +9,7 @@ const SpecialtiesList = props => {
     return (
       <div className="center">
         <Card>
-          <h2>No specialties found.</h2>
+          <h2>No specialty found.</h2>
         </Card>
       </div>
     );
@@ -16,6 +17,13 @@ const SpecialtiesList = props => {
 
   return (
     <ul className="specialty-list">
+      {props.items.map(specialty => (
+        <SpecialtyItem
+          key={specialty.id}
+          id={specialty.id}
+          name={specialty.name}
+        />
+      ))}
     </ul>
   );
 };
