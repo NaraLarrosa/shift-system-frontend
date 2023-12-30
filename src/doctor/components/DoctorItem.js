@@ -26,6 +26,10 @@ const DoctorItem = () => {
       dni: {
         value: '',
         isValid: false
+      },
+      specialty: {
+        value: '',
+        isValid: false
       }
     },
     false

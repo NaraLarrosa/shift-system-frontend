@@ -11,11 +11,11 @@ import {
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import { AuthContext } from '../../shared/context/auth-context';
+//import { AuthContext } from '../../shared/context/auth-context';
 import './DoctorForm.css';
 
 const NewDoctor = () => {
-  const auth = useContext(AuthContext);
+  //const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, inputHandler] = useForm(
     {
@@ -49,8 +49,9 @@ const NewDoctor = () => {
       formData.append('surname', formState.inputs.description.value);
       formData.append('dni', formState.inputs.address.value);
       formData.append('specialty', formState.inputs.image.value);
-      await sendRequest('http://localhost:5000/api/doctor', 'POST', formData, {
-        Authorization: 'Bearer ' + auth.token
+      await sendRequest('http://localhost:5000/api/doctor/add', 'POST', formData, {
+        //Authorization: 'Bearer ' + auth.token
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMxNjc4MDl9.Q92FQGpCZM2qZW0HNiwBWbhhrTx8j6qV2k8Q20Kb-p0"
       });
       history.push('/doctors');
     } catch (err) {}
@@ -82,7 +83,7 @@ const NewDoctor = () => {
           id="dni"
           element="input"
           label="DNI"
-          validators={[VALIDATOR_REQUIRE()]}
+          validators={[VALIDATOR_MINLENGTH(7)]}
           errorText="Please enter a valid DNI."
           onInput={inputHandler}
         />

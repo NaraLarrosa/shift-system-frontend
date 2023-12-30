@@ -73,7 +73,7 @@ const UpdateDoctor = () => {
     event.preventDefault();
     try {
       await sendRequest(
-        `http://localhost:5000/api/doctor/${doctorId}`,
+        `http://localhost:5000/api/doctor/update/${doctorId}`,
         'PATCH',
         JSON.stringify({
           name: formState.inputs.name.value,
@@ -82,7 +82,8 @@ const UpdateDoctor = () => {
         }),
         {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + auth.token
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMxNjc4MDl9.Q92FQGpCZM2qZW0HNiwBWbhhrTx8j6qV2k8Q20Kb-p0"
+          //Authorization: 'Bearer ' + auth.token
         }
       );
       history.push('/' + auth.userId + '/doctors');
