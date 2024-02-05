@@ -3,9 +3,12 @@ import React from 'react';
 import SpecialtyItem from './SpecialtyItem';
 import Card from '../../shared/components/UIElements/Card';
 import './SpecialtiesList.css';
+import { useSelector } from "react-redux";
 
 const SpecialtiesList = props => {
-  if (props.items.length === 0) {
+  const specialties = useSelector((state) => state.specialty.specialties);
+
+  if (specialties.length === 0) {
     return (
       <div className="center">
         <Card>
@@ -17,7 +20,7 @@ const SpecialtiesList = props => {
 
   return (
     <ul className="specialty-list">
-      {props.items.map(specialty => (
+      {specialties.map(specialty => (
         <SpecialtyItem
           key={specialty.id}
           id={specialty.id}

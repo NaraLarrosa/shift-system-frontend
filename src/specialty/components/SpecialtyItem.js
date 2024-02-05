@@ -8,6 +8,8 @@ import './SpecialtyItem.css';
 const SpecialtyItem = props => {
   const { isLoading, error, clearError } = useHttpClient();
 
+  //cambiar card a tabla
+
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />

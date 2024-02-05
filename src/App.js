@@ -7,10 +7,10 @@ import {
 } from 'react-router-dom';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 
-import Users from './user/pages/Users';
+// import Users from './user/pages/Users';
 import Specialties from './specialty/pages/Specialties';
 import Auth from './user/pages/Auth';
-import Doctors from './doctor/components/DoctorList';
+import Doctors from './doctor/pages/Doctors';
 import Shifts from './shift/pages/NewShift'
 
 const App = () => { 
@@ -18,20 +18,20 @@ let routes;
 
     routes = (
         <Switch>
-            <Route path="/users" exact>
+            {/* <Route path="/users" exact>
                 <Users />
-            </Route>
+            </Route> */}
             <Route path="/specialties" exact>
                 <Specialties />
             </Route>
-            <Route path="/">
-                <Auth />
-            </Route>
-            <Route path="/doctors">
+            <Route path="/doctors" exact>
                 <Doctors />
             </Route>
             <Route path="/shifts">
                 <Shifts />
+            </Route>
+            <Route path="/">
+                <Auth />
             </Route>
             <Redirect to="/" />
         </Switch>

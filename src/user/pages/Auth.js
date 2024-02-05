@@ -14,11 +14,14 @@ import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import './Auth.css';
+import { useDispatch } from "react-redux";
+import { updateToken } from "../userSlice";
 
 const Auth = () => {
   const auth = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const dispatch = useDispatch();
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -83,10 +86,11 @@ const Auth = () => {
           {
             'Content-Type': 'application/json'
           }
-        );
+        )
         auth.login(responseData.userId, responseData.token);
         auth.token = responseData.token;
         console.log(auth);
+        dispatch(updateToken(auth.token));
       } catch (err) {}
     } else {
       try {
@@ -104,6 +108,9 @@ const Auth = () => {
         );
 
         auth.login(responseData.userId, responseData.token);
+        auth.token = responseData.token;
+        dispatch(updateToken(auth.token));
+
       } catch (err) {}
     }
   };

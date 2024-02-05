@@ -1,42 +1,89 @@
+// import React from 'react';
+// import { Link } from 'react-router-dom';
+
+// import './Button.css';
+
+// const Button = props => {
+//   if (props.href) {
+//     return (
+//       <a
+//         className={`button button--${props.size || 'default'} ${props.inverse &&
+//           'button--inverse'} ${props.danger && 'button--danger'}`}
+//         href={props.href}
+//       >
+//         {props.children}
+//       </a>
+//     );
+//   }
+//   if (props.to) {
+//     return (
+//       <Link
+//         to={props.to}
+//         exact={props.exact}
+//         className={`button button--${props.size || 'default'} ${props.inverse &&
+//           'button--inverse'} ${props.danger && 'button--danger'}`}
+//       >
+//         {props.children}
+//       </Link>
+//     );
+//   }
+//   return (
+//     <button
+//       className={`button button--${props.size || 'default'} ${props.inverse &&
+//         'button--inverse'} ${props.danger && 'button--danger'}`}
+//       type={props.type}
+//       onClick={props.onClick}
+//       disabled={props.disabled}
+//     >
+//       {props.children}
+//     </button>
+//   );
+// };
+
+// export default Button;
+
+
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import { Button as MuiButton } from '@mui/material';
 
-import './Button.css';
+const Button = (props) => {
+  const { href, to, size, inverse, danger, type, onClick, disabled, children, ...other } = props;
 
-const Button = props => {
-  if (props.href) {
+  if (href) {
     return (
       <a
-        className={`button button--${props.size || 'default'} ${props.inverse &&
-          'button--inverse'} ${props.danger && 'button--danger'}`}
-        href={props.href}
+        className={`button button--${size || 'default'} ${inverse && 'button--inverse'} ${danger && 'button--danger'}`}
+        href={href}
+        {...other}
       >
-        {props.children}
+        {children}
       </a>
     );
   }
-  if (props.to) {
+
+  if (to) {
     return (
-      <Link
-        to={props.to}
-        exact={props.exact}
-        className={`button button--${props.size || 'default'} ${props.inverse &&
-          'button--inverse'} ${props.danger && 'button--danger'}`}
+      <RouterLink
+        to={to}
+        className={`button button--${size || 'default'} ${inverse && 'button--inverse'} ${danger && 'button--danger'}`}
+        {...other}
       >
-        {props.children}
-      </Link>
+        {children}
+      </RouterLink>
     );
   }
+
   return (
-    <button
-      className={`button button--${props.size || 'default'} ${props.inverse &&
-        'button--inverse'} ${props.danger && 'button--danger'}`}
-      type={props.type}
-      onClick={props.onClick}
-      disabled={props.disabled}
+    <MuiButton
+      className={`button button--${size || 'default'} ${inverse && 'button--inverse'} ${danger && 'button--danger'}`}
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      {...other}
     >
-      {props.children}
-    </button>
+      {children}
+    </MuiButton>
   );
 };
 

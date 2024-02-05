@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from '../../shared/components/UIElements/Card';
-import DoctorItem from './DoctorItem';
 import Button from '../../shared/components/FormElements/Button';
-import ErrorModal from '../../shared/components/UIElements/ErrorModal';
-import { useHttpClient } from '../../shared/hooks/http-hook';
+import { useSelector } from "react-redux";
+import { DataGrid } from '@mui/x-data-grid';
 
 import './DoctorList.css';
 
-const DoctorList = props => {
-  const { error, clearError } = useHttpClient();
+const DoctorList = () => {
 
-  if (props.items.length === 0) {
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(5);
+  const doctors = useSelector((state) => state.doctor.doctors.doctors);
+
+  if (doctors.length === 0) {
     return (
       <div className="doctor-list center">
         <Card>
@@ -19,24 +21,40 @@ const DoctorList = props => {
         </Card>
       </div>
     );
-  }
+  };
+
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 230 },
+    { field: 'name', headerName: 'Name', width: 180 },
+    { field: 'surname', headerName: 'Surname', width: 180 },
+    {
+      field: 'dni', headerName: 'DNI', width: 130,
+    },
+    {
+      field: 'specialty.name', headerName: 'Specialty', width: 230
+    }
+  ];
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
+  const handlePageSizeChange = (newPageSize) => {
+    setPageSize(newPageSize);
+  };
 
   return (
-    <React.Fragment>
-      <ErrorModal error={error} onClear={clearError} />
-        <ul className="doctor-list">
-        {props.items.map(doctor => (
-          <DoctorItem
-            key={doctor.id}
-            id={doctor.id}
-            name={doctor.name}
-            surname={doctor.surname}
-            dni={doctor.dni}
-            specialty={doctor.specialty}
-          />
-        ))}
-        </ul>
-      </React.Fragment>
+    <div style={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={doctors.slice(page * pageSize, (page + 1) * pageSize)}
+        columns={columns}
+        pagination
+        pageSize={pageSize}
+        rowCount={doctors.length}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
+      />
+    </div>
   );
 };
 
