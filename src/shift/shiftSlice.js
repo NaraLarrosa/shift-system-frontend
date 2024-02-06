@@ -14,7 +14,7 @@ export const shiftSlice = createSlice({
   name: "shift",
   initialState,
   reducers: {
-    updateShifts: (state, action) => {
+    updateShift: (state, action) => {
       state.shifts = action.payload;
     },
   },

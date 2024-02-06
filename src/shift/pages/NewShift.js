@@ -38,10 +38,6 @@ const NewShift = () => {
       doctor: {
         value: '',
         isValid: false
-      },
-      canceled: {
-        value: '',
-        isValid: false
       }
     },
     false
@@ -58,7 +54,6 @@ const NewShift = () => {
       formData.append('description', formState.inputs.description.value);
       formData.append('available', formState.inputs.available.value);
       formData.append('doctor', formState.inputs.doctor.value);
-      formData.append('canceled', formState.inputs.canceled.value);
       await sendRequest('http://localhost:5000/api/shift/create', 'POST', formData, {
         Authorization: 'Bearer ' + auth.token
       });
@@ -110,14 +105,6 @@ const NewShift = () => {
           label="Doctor"
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter a valid doctor."
-          onInput={inputHandler}
-        />
-        <Input
-          id="canceled"
-          element="input"
-          label="Canceled"
-          validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter true or false."
           onInput={inputHandler}
         />
         <Button type="submit" disabled={!formState.isValid}>
