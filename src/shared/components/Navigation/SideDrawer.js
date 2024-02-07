@@ -38,7 +38,16 @@ const SideDrawer = props => {
       mountOnEnter
       unmountOnExit
     >
-      <aside className="side-drawer" onClick={props.onClick}>{props.children}</aside>
+      <aside 
+        className="side-drawer" onClick={props.onClick} style={{ 
+          width: '350px',
+          left: '22px',
+          top: '37px', 
+          boxShadow: 'rgba(0, 0, 0, 0.38) 2px 2px 10px',
+          height: '90vh' }}
+        >
+        {props.children}
+      </aside>
     </Slide>
   );
 

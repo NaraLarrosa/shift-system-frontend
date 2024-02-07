@@ -7,10 +7,14 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
+import { useSelector, useDispatch } from "react-redux";
+import { updateSpecialties } from "../specialtySlice";
 
 import {
   VALIDATOR_REQUIRE,
 } from '../../shared/util/validators';
+
+const specialties = useSelector((state) => state.specialty.specialties);
 
 const AddSpecialty = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -26,7 +30,10 @@ const AddSpecialty = () => {
   const history = useHistory();
 
   const specialtySubmitHandler = async event => {
+
     event.preventDefault();
+    // const dispatch = useDispatch();
+
     try {
       const formData = new FormData();
       formData.append('name', formState.inputs.title.value);
@@ -35,7 +42,10 @@ const AddSpecialty = () => {
       }), {
         'Content-Type': 'application/json'
       });
+
+      // dispatch(updateSpecialties(specialties));
       history.push('/');
+
     } catch (err) {}
   };
 

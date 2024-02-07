@@ -13,6 +13,10 @@ import {
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
+import { useSelector, useDispatch } from "react-redux";
+import { updateDoctors } from "../doctorSlice";
+
+
 import './DoctorForm.css';
 
 const UpdateDoctor = () => {
@@ -21,6 +25,8 @@ const UpdateDoctor = () => {
   const [loadedDoctor, setLoadedDoctor] = useState();
   const doctorId = useParams().doctorId;
   const history = useHistory();
+  const token = useSelector((state) => state.user.token);
+  const dispatch = useDispatch();
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -64,10 +70,11 @@ const UpdateDoctor = () => {
           },
           true
         );
+        dispatch(updateDoctors(responseData));
       } catch (err) {}
     };
     fetchDoctor();
-  }, [sendRequest, doctorId, setFormData]);
+  }, [dispatch, doctorId, sendRequest, setFormData]);
 
   const doctorUpdateSubmitHandler = async event => {
     event.preventDefault();
@@ -82,11 +89,12 @@ const UpdateDoctor = () => {
         }),
         {
           'Content-Type': 'application/json',
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMxNjc4MDl9.Q92FQGpCZM2qZW0HNiwBWbhhrTx8j6qV2k8Q20Kb-p0"
-          //Authorization: 'Bearer ' + auth.token
+          Authorization: 'Bearer ' + token
         }
       );
       history.push('/' + auth.userId + '/doctors');
+      dispatch(updateDoctors(sendRequest));
+
     } catch (err) {}
   };
 

@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
@@ -11,11 +10,14 @@ import {
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-//import { AuthContext } from '../../shared/context/auth-context';
+import { useSelector, useDispatch } from "react-redux";
+import { updateDoctors } from "../doctorSlice";
+
 import './DoctorForm.css';
 
 const NewDoctor = () => {
-  //const auth = useContext(AuthContext);
+  const token = useSelector((state) => state.user.token);
+  const dispatch = useDispatch();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, inputHandler] = useForm(
     {
@@ -50,9 +52,9 @@ const NewDoctor = () => {
       formData.append('dni', formState.inputs.address.value);
       formData.append('specialty', formState.inputs.image.value);
       await sendRequest('http://localhost:5000/api/doctor/add', 'POST', formData, {
-        //Authorization: 'Bearer ' + auth.token
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTgyMmQ5OWQ0YTNhYzkzNTg5Yjk4YWQiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MDMxNjc4MDl9.Q92FQGpCZM2qZW0HNiwBWbhhrTx8j6qV2k8Q20Kb-p0"
+        Authorization: 'Bearer ' + token
       });
+      dispatch(updateDoctors(formData));
       history.push('/doctors');
     } catch (err) {}
   };

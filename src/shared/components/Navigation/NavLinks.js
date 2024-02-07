@@ -1,33 +1,78 @@
+// import React from 'react';
+// import { NavLink } from 'react-router-dom';
+
+// import './NavLinks.css';
+
+// const NavLinks = props => {
+
+//   return (
+//     <ul className="nav-links">
+//       <li>
+//         <NavLink to="/users" exact>
+//           USERS
+//         </NavLink>
+//       </li>
+//       <li>
+//         <NavLink to="/specialties" exact>
+//           SPECIALTIES
+//         </NavLink>
+//       </li>
+//       <li>
+//         <NavLink to="/doctors" exact>
+//           DOCTORS
+//         </NavLink>
+//       </li>
+//       <li>
+//         <NavLink to="/shifts" exact>
+//           SHIFTS
+//         </NavLink>
+//       </li>
+//     </ul>
+//   );
+// };
+
+// export default NavLinks;
+
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { styled } from '@mui/system';
 
-import './NavLinks.css';
+const NavLinks = () => {
+  const NavList = styled('ul')({
+    listStyle: 'inside',
+    padding: 20,
+    margin: 40,
+    display: 'flex',
+    flexDirection: 'column'
+  });
 
-const NavLinks = props => {
+  const NavItem = styled('li')({
+    marginRight: '100px',
+  });
 
   return (
-    <ul className="nav-links">
-      <li>
+    <NavList>
+      <NavItem>
         <NavLink to="/users" exact>
           USERS
         </NavLink>
-      </li>
-      <li>
+      </NavItem>
+      <NavItem>
         <NavLink to="/specialties" exact>
           SPECIALTIES
         </NavLink>
-      </li>
-      <li>
+      </NavItem>
+      <NavItem>
         <NavLink to="/doctors" exact>
           DOCTORS
         </NavLink>
-      </li>
-      <li>
+      </NavItem>
+      <NavItem>
         <NavLink to="/shifts" exact>
           SHIFTS
         </NavLink>
-      </li>
-    </ul>
+      </NavItem>
+    </NavList>
   );
 };
 
