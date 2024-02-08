@@ -10,14 +10,12 @@ import {
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import { useSelector, useDispatch } from "react-redux";
-import { updateDoctors } from "../doctorSlice";
+import { useSelector } from "react-redux";
 
 import './DoctorForm.css';
 
 const NewDoctor = () => {
-  const token = useSelector((state) => state.user.token);
-  const dispatch = useDispatch();
+
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, inputHandler] = useForm(
     {
@@ -41,20 +39,33 @@ const NewDoctor = () => {
     false
   );
 
+  const token = useSelector((state) => state.user.token);
   const history = useHistory();
 
   const doctorSubmitHandler = async event => {
     event.preventDefault();
+
     try {
-      const formData = new FormData();
-      formData.append('name', formState.inputs.title.value);
-      formData.append('surname', formState.inputs.description.value);
-      formData.append('dni', formState.inputs.address.value);
-      formData.append('specialty', formState.inputs.image.value);
-      await sendRequest('http://localhost:5000/api/doctor/add', 'POST', formData, {
-        Authorization: 'Bearer ' + token
-      });
-      dispatch(updateDoctors(formData));
+      const requestBody = {
+        name: formState.inputs.name.value,
+        surname: formState.inputs.surname.value,
+        dni: formState.inputs.dni.value,
+        specialty: formState.inputs.specialty.value
+      };
+      // const formData = new FormData();
+      // formData.append('name', formState.inputs.name.value);
+      // formData.append('surname', formState.inputs.surname.value);
+      // formData.append('dni', formState.inputs.dni.value);
+      // formData.append('specialty', formState.inputs.specialty.value);
+
+      await sendRequest('http://localhost:5000/api/doctor/add',
+        'POST', 
+        JSON.stringify(requestBody), 
+        {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        }
+      );
       history.push('/doctors');
     } catch (err) {}
   };
@@ -62,7 +73,7 @@ const NewDoctor = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      <form className="doctor-form" onSubmit={doctorSubmitHandler}>
+      <form className="doctor-form" onSubmit={doctorSubmitHandler} method='POST'>
         {isLoading && <LoadingSpinner asOverlay />}
         <Input
           id="name"
@@ -75,7 +86,7 @@ const NewDoctor = () => {
         />
         <Input
           id="surname"
-          element="textarea"
+          element="input"
           label="Surname"
           validators={[VALIDATOR_MINLENGTH(5)]}
           errorText="Please enter a valid surname (at least 5 characters)."

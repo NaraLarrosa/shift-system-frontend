@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import Card from '../../shared/components/UIElements/Card';
 import { useSelector } from "react-redux";
+
+
 import { DataGrid } from '@mui/x-data-grid';
 
 const ShiftList = () => {
@@ -7,6 +10,16 @@ const ShiftList = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
   const shifts = useSelector((state) => state.shift.shifts);
+
+  if (shifts.length === 0) {
+    return (
+      <div className="shift-list center">
+        <Card>
+          <h2>No shifts found.</h2>
+        </Card>
+      </div>
+    );
+  };
 
   const columns = [
     { field: 'day', headerName: 'Day', width: 180 },

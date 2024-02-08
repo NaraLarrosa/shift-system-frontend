@@ -18,6 +18,11 @@ const DoctorList = () => {
   const [pageSize, setPageSize] = useState(5);
   const doctors = useSelector((state) => state.doctor.doctors.doctors);
 
+  const doctorList = doctors.map(doctor => ({
+    ...doctor,
+    specialty: doctor.specialty.name
+  }));
+
   if (doctors.length === 0) {
     return (
       <div className="doctor-list center">
@@ -37,7 +42,7 @@ const DoctorList = () => {
       field: 'dni', headerName: 'DNI', width: 120,
     },
     {
-      field: 'specialty.name.description', headerName: 'Specialty', width: 230
+      field: 'specialty', headerName: 'Specialty', width: 230
     },
     { field: 'show', headerName: 'Show', width: 200,
       renderCell: (params) => (
@@ -45,7 +50,7 @@ const DoctorList = () => {
           <IconButton
             aria-label="show doctor"
             component={RouterLink}
-            to={`/api/doctor/${params.row.id}`}
+            to={`/doctor/${params.row.id}`}
             // to={`/Show/${doctors.id}`}
           >
             <VisibilityIcon />
@@ -59,7 +64,7 @@ const DoctorList = () => {
           <IconButton
             aria-label="update doctor"
             component={RouterLink}
-            to={`/api/doctor/update/${params.row.id}`}
+            to={`/doctors/update/${params.row.id}`}
             // to={`/UpdateDoctor/${doctors.id}`}
           >
             <ModeEditIcon />
@@ -83,17 +88,17 @@ const DoctorList = () => {
       <IconButton
           aria-label="add doctor"
           component={RouterLink}
-          to="/api/doctor/add"
+          to="/doctors/add"
         >
         <AddIcon />ADD DOCTOR
       </IconButton>
       </div>
       <DataGrid
-        rows={doctors.slice(page * pageSize, (page + 1) * pageSize)}
+        rows={doctorList.slice(page * pageSize, (page + 1) * pageSize)}
         columns={columns}
         pagination
         pageSize={pageSize}
-        rowCount={doctors.length}
+        rowCount={doctorList.length}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
       />

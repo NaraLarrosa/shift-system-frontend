@@ -12,7 +12,7 @@ import {
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import { AuthContext } from '../../shared/context/auth-context';
+// import { AuthContext } from '../../shared/context/auth-context';
 import { useSelector, useDispatch } from "react-redux";
 import { updateDoctors } from "../doctorSlice";
 
@@ -20,7 +20,7 @@ import { updateDoctors } from "../doctorSlice";
 import './DoctorForm.css';
 
 const UpdateDoctor = () => {
-  const auth = useContext(AuthContext);
+  // const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [loadedDoctor, setLoadedDoctor] = useState();
   const doctorId = useParams().doctorId;
@@ -77,7 +77,9 @@ const UpdateDoctor = () => {
   }, [dispatch, doctorId, sendRequest, setFormData]);
 
   const doctorUpdateSubmitHandler = async event => {
+
     event.preventDefault();
+
     try {
       await sendRequest(
         `http://localhost:5000/api/doctor/update/${doctorId}`,
@@ -92,7 +94,8 @@ const UpdateDoctor = () => {
           Authorization: 'Bearer ' + token
         }
       );
-      history.push('/' + auth.userId + '/doctors');
+
+      history.push('/' + token + '/doctors');
       dispatch(updateDoctors(sendRequest));
 
     } catch (err) {}
@@ -120,7 +123,7 @@ const UpdateDoctor = () => {
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       {!isLoading && loadedDoctor && (
-        <form className="doctor-form" onSubmit={doctorUpdateSubmitHandler}>
+        <form className="doctor-form" onSubmit={doctorUpdateSubmitHandler} method='PATCH'>
           <Input
             id="name"
             element="input"

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-
+import { useHistory } from 'react-router-dom';
 import Card from '../../shared/components/UIElements/Card';
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
@@ -14,8 +14,8 @@ import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import './Auth.css';
-import { useDispatch } from "react-redux";
-import { updateToken } from "../userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../userSlice";
 
 const Auth = () => {
   const auth = useContext(AuthContext);
@@ -36,6 +36,9 @@ const Auth = () => {
     },
     false
   );
+
+  const token = useSelector((state) => state.user.token);
+  const history = useHistory();
 
   const switchModeHandler = () => {
     if (!isLoginMode) {
@@ -90,26 +93,45 @@ const Auth = () => {
         auth.login(responseData.userId, responseData.token);
         auth.token = responseData.token;
         console.log(auth);
-        dispatch(updateToken(auth.token));
+        
+        const payload = {  
+          'token' : responseData.token,
+          'userId' : responseData.userId
+        };
+
+        dispatch(updateUser(payload));
+
       } catch (err) {}
     } else {
       try {
-        const formData = new FormData();
-        formData.append('name', formState.inputs.name.value);
-        formData.append('surname', formState.inputs.surname.value);
-        formData.append('dni', formState.inputs.dni.value);
-        formData.append('type', formState.inputs.type.value);
-        formData.append('email', formState.inputs.email.value);
-        formData.append('password', formState.inputs.password.value);
+
+        const requestBody = {
+          name: formState.inputs.name.value,
+          surname: formState.inputs.surname.value,
+          dni: formState.inputs.dni.value,
+          type: formState.inputs.type.value,
+          email: formState.inputs.email.value,
+          password: formState.inputs.password.value
+        };
+
+        // const formData = new FormData();
+        // formData.append('name', formState.inputs.name.value);
+        // formData.append('surname', formState.inputs.surname.value);
+        // formData.append('dni', formState.inputs.dni.value);
+        // formData.append('type', formState.inputs.type.value);
+        // formData.append('email', formState.inputs.email.value);
+        // formData.append('password', formState.inputs.password.value);
         const responseData = await sendRequest(
           'http://localhost:5000/api/user/register',
           'POST',
-          formData
-        );
+          JSON.stringify(requestBody), 
+        {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        }
+      );
 
-        auth.login(responseData.userId, responseData.token);
-        auth.token = responseData.token;
-        dispatch(updateToken(auth.token));
+        history.push('/doctors');
 
       } catch (err) {}
     }
@@ -128,7 +150,7 @@ const Auth = () => {
               element="input"
               id="name"
               type="text"
-              label="Your Name"
+              label="Name"
               validators={[VALIDATOR_REQUIRE()]}
               errorText="Please enter a valid name."
               onInput={inputHandler}
@@ -139,7 +161,7 @@ const Auth = () => {
               element="input"
               id="surname"
               type="text"
-              label="Your Surname"
+              label="Surname"
               validators={[VALIDATOR_REQUIRE()]}
               errorText="Please enter a valid surname."
               onInput={inputHandler}
@@ -150,9 +172,20 @@ const Auth = () => {
               element="input"
               id="dni"
               type="number"
-              label="Your DNI"
+              label="DNI"
               validators={[VALIDATOR_REQUIRE()]}
               errorText="Please enter a valid dni."
+              onInput={inputHandler}
+            />
+          )}
+          {!isLoginMode && (
+            <Input
+              element="input"
+              id="type"
+              type="text"
+              label="Type: 'admin or patient'"
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Please enter a valid type."
               onInput={inputHandler}
             />
           )}
@@ -174,7 +207,7 @@ const Auth = () => {
             errorText="Please enter a valid password, at least 6 characters."
             onInput={inputHandler}
           />
-          <Button type="submit" disabled={!formState.isValid}>
+          <Button type="submit" disabled={!formState.isValid} onClick={authSubmitHandler}>
             {isLoginMode ? 'LOGIN' : 'SIGNUP'}
           </Button>
         </form>
