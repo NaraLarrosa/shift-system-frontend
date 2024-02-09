@@ -93,6 +93,7 @@ const Auth = () => {
         auth.login(responseData.userId, responseData.token);
         auth.token = responseData.token;
         console.log(auth);
+        history.push('/specialties');
         
         const payload = {  
           'token' : responseData.token,
@@ -131,7 +132,7 @@ const Auth = () => {
         }
       );
 
-        history.push('/doctors');
+        history.push('/');
 
       } catch (err) {}
     }

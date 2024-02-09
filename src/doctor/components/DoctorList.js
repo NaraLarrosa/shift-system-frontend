@@ -51,7 +51,6 @@ const DoctorList = () => {
             aria-label="show doctor"
             component={RouterLink}
             to={`/doctor/${params.row.id}`}
-            // to={`/Show/${doctors.id}`}
           >
             <VisibilityIcon />
           </IconButton>
@@ -65,7 +64,6 @@ const DoctorList = () => {
             aria-label="update doctor"
             component={RouterLink}
             to={`/doctors/update/${params.row.id}`}
-            // to={`/UpdateDoctor/${doctors.id}`}
           >
             <ModeEditIcon />
           </IconButton>

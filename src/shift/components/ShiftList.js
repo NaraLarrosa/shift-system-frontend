@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Card from '../../shared/components/UIElements/Card';
 import { useSelector } from "react-redux";
 
-
 import { DataGrid } from '@mui/x-data-grid';
 
 const ShiftList = () => {
@@ -10,6 +9,12 @@ const ShiftList = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
   const shifts = useSelector((state) => state.shift.shifts);
+
+  
+  const shiftList = shifts.map(shift => ({
+    ...shift,
+    doctor: shift.doctor.name
+  }));
 
   if (shifts.length === 0) {
     return (
@@ -28,7 +33,6 @@ const ShiftList = () => {
     { field: 'description', headerName: 'Description', width: 230 },
     { field: 'available', headerName: 'Available', width: 230 },
     { field: 'doctor', headerName: 'Doctor', width: 230 },
-    { field: 'canceled', headerName: 'Canceled', width: 230 }
   ];
 
   const handlePageChange = (newPage) => {
@@ -42,11 +46,11 @@ const ShiftList = () => {
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
-        rows={shifts.slice(page * pageSize, (page + 1) * pageSize)}
+        rows={shiftList.slice(page * pageSize, (page + 1) * pageSize)}
         columns={columns}
         pagination
         pageSize={pageSize}
-        rowCount={shifts.length}
+        rowCount={shiftList.length}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
       />

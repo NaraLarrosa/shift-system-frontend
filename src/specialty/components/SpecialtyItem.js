@@ -96,8 +96,8 @@ const SpecialtyItem = () => {
 
   if (specialties.length === 0) {
     return (
-      <div className="center">
-        <Card>
+      <div className="center" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
+        <Card style={{ width: '80%', maxWidth: '600px', padding: '20px', textAlign: 'center' }}>
           <h2>No specialty found.</h2>
         </Card>
       </div>

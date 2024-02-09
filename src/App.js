@@ -11,8 +11,9 @@ import AddSpecialty from './specialty/pages/AddSpecialty';
 import Doctors from './doctor/pages/Doctors';
 import NewDoctor from './doctor/pages/NewDoctor';
 import UpdateDoctor from './doctor/pages/UpdateDoctor';
-import doctorItem from './doctor/components/DoctorItem';
+import DoctorItem from './doctor/components/DoctorItem';
 import ShiftList from './shift/components/ShiftList';
+import NewShift from './shift/pages/NewShift';
 import Auth from './user/pages/Auth';
 
 
@@ -35,15 +36,17 @@ let routes;
             <Route path="/doctors/add" exact>
                 <NewDoctor />
             </Route>
-            <Route path="/doctors/update" exact>
-                <UpdateDoctor />
-            </Route>
+            <Route path="/doctors/update" component={UpdateDoctor} />
+            
             <Route path="/doctor/:did" exact>
-                <Doctors />
+                <DoctorItem/>
             </Route>
             
             <Route path="/shifts">
                 <ShiftList />
+            </Route>
+            <Route path="/shifts">
+                <NewShift />
             </Route>
 
             <Route path="/users">

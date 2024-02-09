@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
@@ -11,11 +10,10 @@ import {
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import { AuthContext } from '../../shared/context/auth-context';
+import { useSelector } from "react-redux";
 import './ShiftForm.css';
 
 const NewShift = () => {
-  const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, inputHandler] = useForm(
     {
@@ -43,28 +41,47 @@ const NewShift = () => {
     false
   );
 
+  const token = useSelector((state) => state.user.token);
   const history = useHistory();
 
   const shiftSubmitHandler = async event => {
     event.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append('day', formState.inputs.day.value);
-      formData.append('hour', formState.inputs.hour.value);
-      formData.append('description', formState.inputs.description.value);
-      formData.append('available', formState.inputs.available.value);
-      formData.append('doctor', formState.inputs.doctor.value);
-      await sendRequest('http://localhost:5000/api/shift/create', 'POST', formData, {
-        Authorization: 'Bearer ' + auth.token
-      });
+
+      const requestBody = {
+        day: formState.inputs.name.value,
+        hour: formState.inputs.surname.value,
+        description: formState.inputs.dni.value,
+        available: formState.inputs.specialty.value,
+        doctor: formState.inputs.doctor.value
+
+      };
+
+      // const formData = new FormData();
+      // formData.append('day', formState.inputs.day.value);
+      // formData.append('hour', formState.inputs.hour.value);
+      // formData.append('description', formState.inputs.description.value);
+      // formData.append('available', formState.inputs.available.value);
+      // formData.append('doctor', formState.inputs.doctor.value);
+
+      await sendRequest('http://localhost:5000/api/shift/create',
+       'POST',
+        JSON.stringify(requestBody), 
+        {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        }
+      );
+
       history.push('/');
+
     } catch (err) {}
   };
 
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      <form className="shift-form" onSubmit={shiftSubmitHandler}>
+      <form className="shift-form" onSubmit={shiftSubmitHandler} method='POST'>
         {isLoading && <LoadingSpinner asOverlay />}
         <Input
           id="day"

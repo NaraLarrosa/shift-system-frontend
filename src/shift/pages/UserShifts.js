@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
 import ShiftList from '../components/ShiftList';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
+import { useSelector } from "react-redux";
+
 
 const UserShift = () => {
   const [loadedShifts, setLoadedShifts] = useState();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const userShift = useSelector((state) => state.user.shift.shifts);
 
   const userId = useParams().userId;
 
@@ -18,7 +20,7 @@ const UserShift = () => {
         const responseData = await sendRequest(
           `http://localhost:5000/api/shift/reservation/${userId}`
         );
-        setLoadedShifts(responseData.shift);
+        setLoadedShifts(responseData.userShift);
       } catch (err) {}
     };
     fetchShifts();
@@ -26,7 +28,7 @@ const UserShift = () => {
 
   const shiftDeletedHandler = deletedShiftId => {
     setLoadedShifts(prevShifts =>
-      prevShifts.filter(shift => shift.id !== deletedShiftId)
+      prevShifts.filter(shift => userShift.id !== deletedShiftId)
     );
   };
 
@@ -39,7 +41,7 @@ const UserShift = () => {
         </div>
       )}
       {!isLoading && loadedShifts && (
-        <ShiftList items={loadedShifts} onDeleteShift={shiftDeletedHandler} />
+        <ShiftList items={loadedShifts} onDeleteShift={shiftDeletedHandler} method='GET' />
       )}
     </React.Fragment>
   );

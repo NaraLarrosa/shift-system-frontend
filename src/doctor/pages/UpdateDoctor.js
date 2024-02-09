@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElements/Card';
@@ -12,7 +11,7 @@ import {
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-// import { AuthContext } from '../../shared/context/auth-context';
+import { AuthContext } from '../../shared/context/auth-context';
 import { useSelector, useDispatch } from "react-redux";
 import { updateDoctors } from "../doctorSlice";
 
@@ -20,13 +19,14 @@ import { updateDoctors } from "../doctorSlice";
 import './DoctorForm.css';
 
 const UpdateDoctor = () => {
-  // const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [loadedDoctor, setLoadedDoctor] = useState();
+  
   const doctorId = useParams().doctorId;
   const history = useHistory();
   const token = useSelector((state) => state.user.token);
   const dispatch = useDispatch();
+  const auth = useContext(AuthContext);
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -48,6 +48,7 @@ const UpdateDoctor = () => {
 
   useEffect(() => {
     const fetchDoctor = async () => {
+
       try {
         const responseData = await sendRequest(
           `http://localhost:5000/api/doctor/update/${doctorId}`
@@ -77,28 +78,28 @@ const UpdateDoctor = () => {
   }, [dispatch, doctorId, sendRequest, setFormData]);
 
   const doctorUpdateSubmitHandler = async event => {
-
     event.preventDefault();
 
-    try {
-      await sendRequest(
-        `http://localhost:5000/api/doctor/update/${doctorId}`,
-        'PATCH',
-        JSON.stringify({
-          name: formState.inputs.name.value,
-          surname: formState.inputs.surname.value,
-          dni: formState.inputs.dni.value
-        }),
-        {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token
-        }
-      );
+      try {
+        await sendRequest(
+          `http://localhost:5000/api/doctor/update/${doctorId}`,
+          'PATCH',
+          JSON.stringify({
+            name: formState.inputs.name.value,
+            surname: formState.inputs.surname.value,
+            dni: formState.inputs.dni.value
+          }),
+          {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token
+          }
+        );
 
-      history.push('/' + token + '/doctors');
-      dispatch(updateDoctors(sendRequest));
 
-    } catch (err) {}
+        history.push('/' + auth.userId + '/doctors');
+        // dispatch(updateDoctors(sendRequest));
+
+      } catch (err) {}
   };
 
   if (isLoading) {

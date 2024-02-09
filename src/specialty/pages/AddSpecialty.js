@@ -128,22 +128,25 @@ const AddSpecialty = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      <form className="specialty-form" onSubmit={specialtySubmitHandler} method='POST'>
-        {isLoading && <LoadingSpinner asOverlay />}
-        <Card>
-          <Input
-            id="name"
-            element="input"
-            type="text"
-            label="Name"
-            validators={[VALIDATOR_REQUIRE()]}
-            errorText="Please enter a valid name."
-            onInput={inputHandler}
-          />
-        </Card>
-        <Button type="submit" disabled={!formState.isValid}>
-          ADD SPECIALTY
-        </Button>
+      <form className="specialty-form" onSubmit={specialtySubmitHandler} 
+        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}} 
+        method='POST'>
+          {isLoading && <LoadingSpinner asOverlay />}
+          <Card style={{ width: '80%', maxWidth: '600px', padding: '20px', textAlign: 'center'}}>
+            <h1> ADD SPECIALTY:</h1>
+            <Input
+              id="name"
+              element="input"
+              type="text"
+              label="Name"
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Please enter a valid name."
+              onInput={inputHandler}
+            />
+          </Card>
+          <Button type="submit" disabled={!formState.isValid}>
+            ADD SPECIALTY
+          </Button>
       </form>
     </React.Fragment>
   );
