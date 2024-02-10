@@ -7,13 +7,11 @@ import Card from '../../shared/components/UIElements/Card';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import {
-  VALIDATOR_REQUIRE,
-  VALIDATOR_MINLENGTH
+  VALIDATOR_REQUIRE
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
-import './ShiftForm.css';
 
 const UpdateShift = () => {
   const auth = useContext(AuthContext);

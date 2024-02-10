@@ -52,11 +52,6 @@ const NewDoctor = () => {
         dni: formState.inputs.dni.value,
         specialty: formState.inputs.specialty.value
       };
-      // const formData = new FormData();
-      // formData.append('name', formState.inputs.name.value);
-      // formData.append('surname', formState.inputs.surname.value);
-      // formData.append('dni', formState.inputs.dni.value);
-      // formData.append('specialty', formState.inputs.specialty.value);
 
       await sendRequest('http://localhost:5000/api/doctor/add',
         'POST', 

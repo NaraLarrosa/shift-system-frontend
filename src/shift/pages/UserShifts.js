@@ -6,7 +6,6 @@ import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { useSelector } from "react-redux";
 
-
 const UserShift = () => {
   const [loadedShifts, setLoadedShifts] = useState();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();

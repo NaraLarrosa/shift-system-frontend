@@ -68,7 +68,7 @@ const NavLinks = () => {
         </NavLink>
       </NavItem>
       <NavItem>
-        <NavLink to="/shifts" exact>
+        <NavLink to="/shift" exact>
           SHIFTS
         </NavLink>
       </NavItem>

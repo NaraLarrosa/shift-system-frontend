@@ -91,6 +91,9 @@ const DoctorList = () => {
         <AddIcon />ADD DOCTOR
       </IconButton>
       </div>
+      <div>
+        <h3>DOCTORS LIST:</h3>
+      </div>
       <DataGrid
         rows={doctorList.slice(page * pageSize, (page + 1) * pageSize)}
         columns={columns}

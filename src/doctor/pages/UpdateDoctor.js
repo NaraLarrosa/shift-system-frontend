@@ -15,7 +15,6 @@ import { AuthContext } from '../../shared/context/auth-context';
 import { useSelector, useDispatch } from "react-redux";
 import { updateDoctors } from "../doctorSlice";
 
-
 import './DoctorForm.css';
 
 const UpdateDoctor = () => {
@@ -48,7 +47,6 @@ const UpdateDoctor = () => {
 
   useEffect(() => {
     const fetchDoctor = async () => {
-
       try {
         const responseData = await sendRequest(
           `http://localhost:5000/api/doctor/update/${doctorId}`
@@ -71,35 +69,30 @@ const UpdateDoctor = () => {
           },
           true
         );
-        dispatch(updateDoctors(responseData));
       } catch (err) {}
     };
     fetchDoctor();
-  }, [dispatch, doctorId, sendRequest, setFormData]);
+  }, [doctorId, sendRequest, setFormData]);
 
   const doctorUpdateSubmitHandler = async event => {
     event.preventDefault();
-
-      try {
-        await sendRequest(
-          `http://localhost:5000/api/doctor/update/${doctorId}`,
-          'PATCH',
-          JSON.stringify({
-            name: formState.inputs.name.value,
-            surname: formState.inputs.surname.value,
-            dni: formState.inputs.dni.value
-          }),
-          {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token
-          }
-        );
-
-
-        history.push('/' + auth.userId + '/doctors');
-        // dispatch(updateDoctors(sendRequest));
-
-      } catch (err) {}
+    try {
+      await sendRequest(
+        `http://localhost:5000/api/doctor/update/${doctorId}`,
+        'PATCH',
+        JSON.stringify({
+          name: formState.inputs.name.value,
+          surname: formState.inputs.surname.value,
+          dni: formState.inputs.dni.value
+        }),
+        {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token
+        }
+      );
+      history.push('/doctors/update');
+      // dispatch(updateDoctors(responseData));
+    } catch (err) {}
   };
 
   if (isLoading) {
@@ -124,7 +117,7 @@ const UpdateDoctor = () => {
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       {!isLoading && loadedDoctor && (
-        <form className="doctor-form" onSubmit={doctorUpdateSubmitHandler} method='PATCH'>
+        <form className="doctor-form" onSubmit={doctorUpdateSubmitHandler}>
           <Input
             id="name"
             element="input"
@@ -138,7 +131,8 @@ const UpdateDoctor = () => {
           />
           <Input
             id="surname"
-            element="textarea"
+            element="input"
+            type="text"
             label="Surname"
             validators={[VALIDATOR_MINLENGTH(5)]}
             errorText="Please enter a valid surname (min. 5 characters)."
@@ -148,7 +142,8 @@ const UpdateDoctor = () => {
           />
           <Input
             id="dni"
-            element="number"
+            element="input"
+            type="number"
             label="DNI"
             validators={[VALIDATOR_MINLENGTH(5)]}
             errorText="Please enter a valid DNI (min. 5 characters)."
