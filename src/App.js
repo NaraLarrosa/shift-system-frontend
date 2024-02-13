@@ -12,11 +12,10 @@ import Doctors from './doctor/pages/Doctors';
 import NewDoctor from './doctor/pages/NewDoctor';
 import UpdateDoctor from './doctor/pages/UpdateDoctor';
 import DoctorItem from './doctor/components/DoctorItem';
-import NewShift from './shift/pages/NewShift';
 import Auth from './user/pages/Auth';
-import ShiftReserve from './shift/pages/ShiftReserve';
 import ViewShift from './shift/components/ViewShift';
-import ShiftByDoctor from './shift/pages/ShiftsByDoctor';
+import ShiftByPatient from './shift/pages/ShiftsByPatient';
+import ShiftCanceled from './shift/pages/ShiftCanceled';
 
 const App = () => { 
 let routes;
@@ -40,7 +39,7 @@ let routes;
             <Route path="/doctor/:did" exact>
                 <DoctorItem/>
             </Route>
-            <Route path="/doctors/update" exact>
+            <Route path="/doctors/update/:did" exact>
                 <UpdateDoctor/>
             </Route>
             
@@ -48,13 +47,13 @@ let routes;
                 <ViewShift />
             </Route>
             <Route path="/shift/doctor">
-                <ShiftByDoctor />
+                <Doctors />
             </Route>
-            <Route path="/new-shift">
-                <NewShift />
+            <Route path="/shift/doctor">
+                <Doctors />
             </Route>
-            <Route path="/reservation">
-                <ShiftReserve />
+            <Route path="/shift/history/cancel/:pid">
+                <ShiftCanceled />
             </Route>
 
             <Route path="/users">

@@ -9,3 +9,16 @@
   border-radius: 6px;
   background: white;
 }
+
+.centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  margin-top: -50px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}

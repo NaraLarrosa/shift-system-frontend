@@ -54,7 +54,7 @@ const AddSpecialty = () => {
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       <form className="specialty-form" onSubmit={specialtySubmitHandler} 
-        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}} 
+        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', marginTop: '-50px' }} 
         method='POST'>
           {isLoading && <LoadingSpinner asOverlay />}
           <Card style={{ width: '80%', maxWidth: '600px', padding: '20px', textAlign: 'center'}}>
