@@ -1,50 +1,78 @@
-import React, { useEffect , useState } from 'react';
-import DoctorList from '../components/DoctorList';
-import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import React, { useEffect, useState } from 'react';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import { useSelector, useDispatch } from "react-redux";
-import { updateShifts } from "../shiftSlice";
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { Card, CardContent, Typography } from '@mui/material';
 
-const pId = useParams().pid;
-
-const CanceledShiftsByPatient = ({ pid }) => { 
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [loadedShifts, setLoadedShifts] = useState();
+function CanceledShiftByPatient() {
+  const { isLoading, sendRequest } = useHttpClient();
+  const [canceledShifts, setCanceledShifts] = useState([]);
+  const userId = useParams().userId;
   const token = useSelector((state) => state.user.token);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchShiftCanceled = async () => {
+    const fetchCanceledShifts = async () => {
       try {
-        const headers = {
-          "Authorization": "Bearer " + token
-        }
         const responseData = await sendRequest(
-          `http://localhost:5000/api/shift/history/cancel/${pId}`,
-          "GET",
+          `http://localhost:5000/api/shift/history/cancel/${userId}`,
+          'GET',
           null,
-          headers
+          {
+            Authorization: 'Bearer ' + token,
+          }
         );
-
-        setLoadedShifts(responseData);
-        dispatch(updateShifts(responseData));
-
-      } catch (err) {}
+  
+        if (responseData && responseData.canceledShifts) {
+          setCanceledShifts(responseData.canceledShifts);
+        } else {
+          setCanceledShifts([]);
+        }
+      } catch (error) {
+        console.error('Error fetching canceled shifts:', error.message);
+      }
     };
-    fetchShiftCanceled();
-  }, [dispatch, sendRequest, token, pid]);
+    fetchCanceledShifts();
+  }, [sendRequest, userId, token]);
 
   return (
     <React.Fragment>
-      <ErrorModal error={error} onClear={clearError} />
+      <Typography variant="h5" style={{ textAlign: 'center', margin: '20px 0' }}>
+        History of appointment cancellations for this patient:
+      </Typography>
       {isLoading && (
         <div className="center">
           <LoadingSpinner />
         </div>
       )}
+      {canceledShifts.length === 0 && !isLoading && (
+        <Card style={{ margin: '20px', width: '300px', textAlign: 'center' }}>
+          <CardContent>
+            <Typography variant="h6">
+            This patient does not have canceled appointments
+            </Typography>
+          </CardContent>
+        </Card>
+      )}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {canceledShifts.map((shift) => (
+          <Card key={shift._id} style={{ margin: '10px', width: '300px' }}>
+            <CardContent>
+              <Typography variant="h6" component="div">
+                Day: {shift.day}
+              </Typography>
+              <Typography variant="h6" component="div">
+                Hour: {shift.hour}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Description: {shift.description}
+              </Typography>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </React.Fragment>
   );
-};
+}
 
-export default CanceledShiftsByPatient;
+export default CanceledShiftByPatient;

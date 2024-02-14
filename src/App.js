@@ -14,8 +14,9 @@ import UpdateDoctor from './doctor/pages/UpdateDoctor';
 import DoctorItem from './doctor/components/DoctorItem';
 import Auth from './user/pages/Auth';
 import ViewShift from './shift/components/ViewShift';
+import ListPatient from './shift/pages/ListPatient';
 import ShiftByPatient from './shift/pages/ShiftsByPatient';
-import ShiftCanceled from './shift/pages/ShiftCanceled';
+import CanceledShiftByPatient from './shift/pages/CanceledShiftsByPatient';
 
 const App = () => { 
 let routes;
@@ -28,6 +29,10 @@ let routes;
             </Route>
             <Route path="/specialty/add" exact>
                 <AddSpecialty />
+            </Route>
+
+            <Route path="/shift/patient" exact>
+                <ListPatient />
             </Route>
 
             <Route path="/doctors" exact>
@@ -46,22 +51,23 @@ let routes;
             <Route path="/shift">
                 <ViewShift />
             </Route>
-            <Route path="/shift/doctor">
+            <Route path="/shift/doctor/:userId">
                 <Doctors />
             </Route>
-            <Route path="/shift/doctor">
-                <Doctors />
+            <Route path="/history/cancel/:userId">
+                <CanceledShiftByPatient />
+            </Route> 
+            <Route path="/pat/:userId">
+                <ShiftByPatient />
             </Route>
-            <Route path="/shift/history/cancel/:pid">
-                <ShiftCanceled />
-            </Route>
-
+            
             <Route path="/users">
                 <Auth />
             </Route>
             <Route path="/">
                 <Auth />
             </Route>
+
             <Redirect to="/" />
         </Switch>
     );

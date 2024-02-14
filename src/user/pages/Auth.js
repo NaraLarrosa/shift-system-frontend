@@ -115,13 +115,6 @@ const Auth = () => {
           password: formState.inputs.password.value
         };
 
-        // const formData = new FormData();
-        // formData.append('name', formState.inputs.name.value);
-        // formData.append('surname', formState.inputs.surname.value);
-        // formData.append('dni', formState.inputs.dni.value);
-        // formData.append('type', formState.inputs.type.value);
-        // formData.append('email', formState.inputs.email.value);
-        // formData.append('password', formState.inputs.password.value);
         const responseData = await sendRequest(
           'http://localhost:5000/api/user/register',
           'POST',

@@ -1,45 +1,64 @@
-import React, { useEffect , useState } from 'react';
-import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import React, { useEffect, useState } from 'react';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import { useSelector, useDispatch } from "react-redux";
-import { updateShift } from "../shiftSlice";
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Card, CardContent, Typography } from '@mui/material';
 
-const Shifts = () => {
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [loadedShifts, setLoadedShifts] = useState();
+function ShiftByPatient() {
+  const { isLoading, sendRequest } = useHttpClient();
+  const [shifts, setShifts] = useState([]);
+  const userId = useParams().userId;
   const token = useSelector((state) => state.user.token);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchShifts = async () => {
       try {
-        const headers = {
-          "Authorization": "Bearer " + token
-        }
         const responseData = await sendRequest(
-          'http://localhost:5000/api/shift/pat', "GET", null, headers
+          `http://localhost:5000/api/shift/pat/${userId}`,
+          'GET',
+          null,
+          {
+            Authorization: 'Bearer ' + token,
+          }
         );
-
-        setLoadedShifts(responseData);
-        dispatch(updateShift(responseData));
-
-      } catch (err) {}
+        setShifts(responseData.shiftByPatient);
+      } catch (error) {
+        console.error('Error fetching shifts:', error.message);
+      }
     };
     fetchShifts();
-  }, [dispatch, sendRequest, token]);
+  }, [sendRequest, userId, token]);
 
   return (
     <React.Fragment>
-      <ErrorModal error={error} onClear={clearError} />
+      <Typography variant="h5" style={{ textAlign: 'center', margin: '20px 0' }}>
+        PATIENT SHIFTS:
+      </Typography>
       {isLoading && (
         <div className="center">
           <LoadingSpinner />
         </div>
       )}
-      {/* {!isLoading && loadedShifts && <ShiftList items={loadedShifts} />} */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {shifts.map((shift) => (
+          <Card key={shift._id} style={{ margin: '10px', width: '300px' }}>
+            <CardContent>
+              <Typography variant="h6" component="div">
+                Day: {shift.day}
+              </Typography>
+              <Typography variant="h6" component="div">
+                Hour: {shift.hour}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Description: {shift.description}
+              </Typography>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </React.Fragment>
   );
-};
+}
 
-export default Shifts;
+export default ShiftByPatient;

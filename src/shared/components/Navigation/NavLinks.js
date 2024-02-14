@@ -37,11 +37,6 @@ const NavLinks = () => {
           SHIFTS
         </NavLink>
       </NavItem>
-      <NavItem>
-        <NavLink to="/shift/cancel" exact>
-          CANCELED SHIFTS - PATIENT
-        </NavLink>
-      </NavItem>
     </NavList>
   );
 };
