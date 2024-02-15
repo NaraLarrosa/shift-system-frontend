@@ -38,7 +38,7 @@ function CanceledShiftByPatient() {
   return (
     <React.Fragment>
       <Typography variant="h5" style={{ textAlign: 'center', margin: '20px 0' }}>
-        History of appointment cancellations for this patient:
+        History of canceled shifts for this patient:
       </Typography>
       {isLoading && (
         <div className="center">
@@ -49,7 +49,7 @@ function CanceledShiftByPatient() {
         <Card style={{ margin: '20px', width: '300px', textAlign: 'center' }}>
           <CardContent>
             <Typography variant="h6">
-            This patient does not have canceled appointments
+              This patient does not have canceled shifts
             </Typography>
           </CardContent>
         </Card>

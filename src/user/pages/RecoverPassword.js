@@ -1,69 +1,59 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import Card from '../../shared/components/UIElements/Card';
-import Input from '../../shared/components/FormElements/Input';
-import Button from '../../shared/components/FormElements/Button';
-import ErrorModal from '../../shared/components/UIElements/ErrorModal';
-import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
-import {
-  VALIDATOR_EMAIL
-} from '../../shared/util/validators';
-import { useHttpClient } from '../../shared/hooks/http-hook';
+import { TextField, Button, Typography, Container, Grid } from '@mui/material';
+import axios from 'axios';
 
-const RecoverPassword = () => {
+function RecoverPassword() {
     const [email, setEmail] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-    const { sendRequest, clearError } = useHttpClient();
-    const history = useHistory();
+    const [newPassword, setNewPassword] = useState('');
+    const [token, setToken] = useState('');
+    const [message, setMessage] = useState('');
 
-    const submitHandler = async event => {
-        event.preventDefault();
-        setIsLoading(true);
-        setError('');
-
-    try {
-        const responseData = await sendRequest(
-            'http://localhost:5000/api/user/recover-password',
-            'POST',
-        JSON.stringify({ email }),
-        {
-            'Content-Type': 'application/json'
+    const handleRecoverPassword = async () => {
+        try {
+            const response = await axios.post(
+                'http://localhost:5000/api/user/recover-password', 
+                { email });
+            setMessage(response.data.message);
+        } catch (error) {
+            setMessage(error.response.data.message);
         }
-        );
-
-      history.push('/'); 
-    } catch (err) {
-      setError(err.message || 'Something went wrong, please try again.');
     };
 
-    setIsLoading(false);
-};
+    const handleResetPassword = async () => {
+        try {
+            const response = await axios.patch(
+                `http://localhost:5000/api/user/reset-password/${token}`,
+                { newPassword }
+            );
+            setMessage(response.data.message); 
+        } catch (error) {
+            setMessage(error.response.data.message);
+        }
+    };
 
     return (
-        <React.Fragment>
-            <ErrorModal error={error} onClear={clearError} />
-        <Card className="authentication">
-            {isLoading && <LoadingSpinner asOverlay />}
-            <h2>Recover Password</h2>
-            <hr />
-            <form onSubmit={submitHandler}>
-            <Input
-                element="input"
-                id="email"
-                type="email"
-                label="E-Mail"
-                validators={[VALIDATOR_EMAIL()]}
-                errorText="Please enter a valid email address."
-                onInput={setEmail}
-            />
-            <Button type="submit" disabled={!email}>
-                RECOVER PASSWORD
-            </Button>
-            </form>
-        </Card>
-        </React.Fragment>
+        <Container maxWidth="sm">
+            <Typography variant="h2" align="center">PASSWORD RECOVERY</Typography>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TextField fullWidth type="email" label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Button variant="contained" color="primary" fullWidth onClick={handleRecoverPassword}>Send recovery email!</Button>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField fullWidth type="password" label="New Password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField fullWidth type="text" label="Recovery Token" value={token} onChange={(e) => setToken(e.target.value)} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Button variant="contained" color="primary" fullWidth onClick={handleResetPassword}>Reset Password</Button>
+                </Grid>
+            </Grid>
+            <Typography variant="body1" align="center">{message}</Typography>
+        </Container>
     );
-};
+}
 
 export default RecoverPassword;

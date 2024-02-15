@@ -3,7 +3,7 @@ import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, Typography, TableHead, TableRow, Paper } from '@mui/material';
 
 function ShiftByPatient() {
   const { isLoading, sendRequest } = useHttpClient();
@@ -40,23 +40,28 @@ function ShiftByPatient() {
           <LoadingSpinner />
         </div>
       )}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {shifts.map((shift) => (
-          <Card key={shift._id} style={{ margin: '10px', width: '300px' }}>
-            <CardContent>
-              <Typography variant="h6" component="div">
-                Day: {shift.day}
-              </Typography>
-              <Typography variant="h6" component="div">
-                Hour: {shift.hour}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Description: {shift.description}
-              </Typography>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {!isLoading && shifts.length > 0 && (
+        <TableContainer component={Paper}>
+          <Table aria-label="shifts table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Day</TableCell>
+                <TableCell>Hour</TableCell>
+                <TableCell>Description</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {shifts.map((shift) => (
+                <TableRow key={shift._id}>
+                  <TableCell>{shift.day}</TableCell>
+                  <TableCell>{shift.hour}</TableCell>
+                  <TableCell>{shift.description}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </React.Fragment>
   );
 }

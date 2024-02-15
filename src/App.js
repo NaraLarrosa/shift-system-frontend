@@ -17,6 +17,7 @@ import ViewShift from './shift/components/ViewShift';
 import ListPatient from './shift/pages/ListPatient';
 import ShiftByPatient from './shift/pages/ShiftsByPatient';
 import CanceledShiftByPatient from './shift/pages/CanceledShiftsByPatient';
+import RecoverPassword from './user/pages/RecoverPassword';
 
 const App = () => { 
 let routes;
@@ -62,7 +63,7 @@ let routes;
             </Route>
             
             <Route path="/users">
-                <Auth />
+                <RecoverPassword />
             </Route>
             <Route path="/">
                 <Auth />
