@@ -9,8 +9,6 @@ function ListPatient() {
     const [users, setUsers] = useState([]);
     const token = useSelector((state) => state.user.token);
 
-    // const currentUser = useSelector((state) => state.user);
-
     useEffect(() => {
 
         async function fetchUsers() {
@@ -25,14 +23,7 @@ function ListPatient() {
 
                 const data = await response.json();
 
-                // const updatedUsers = data.users.map(user => ({
-                //     ...user,
-                //     type: user.id === currentUser.userId ? currentUser.type : 'admin'
-                // }));
-
-                // setUsers(updatedUsers);
                 setUsers(data.users);
-
 
             } catch (error) {
                 console.error('Error fetching users:', error.message);
@@ -40,11 +31,6 @@ function ListPatient() {
         }
         fetchUsers();
     }, [token]);
-
-
-    // if (user.type !== 'patient') {
-    //     return <Typography variant="h6">Entry is only for patient users!</Typography>;
-    // }
 
     return (
         <Container maxWidth="md">

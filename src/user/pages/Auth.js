@@ -125,7 +125,7 @@ const Auth = () => {
         }
       );
 
-        history.push('/');
+        history.push('/login');
 
       } catch (err) {}
     }

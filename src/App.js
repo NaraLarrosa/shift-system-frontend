@@ -18,12 +18,18 @@ import ListPatient from './shift/pages/ListPatient';
 import ShiftByPatient from './shift/pages/ShiftsByPatient';
 import CanceledShiftByPatient from './shift/pages/CanceledShiftsByPatient';
 import RecoverPassword from './user/pages/RecoverPassword';
+import UserItem from './user/components/UserItem';
+import Welcome from './user/pages/Welcome';
 
 const App = () => { 
 let routes;
 
     routes = (
         <Switch>
+
+            <Route path="/" exact>
+                <Welcome />
+            </Route>
 
             <Route path="/specialties" exact>
                 <Specialties />
@@ -48,6 +54,9 @@ let routes;
             <Route path="/doctors/update/:did" exact>
                 <UpdateDoctor/>
             </Route>
+            <Route path="/user-item" exact>
+                <UserItem />
+            </Route>
             
             <Route path="/shift">
                 <ViewShift />
@@ -65,7 +74,7 @@ let routes;
             <Route path="/users">
                 <RecoverPassword />
             </Route>
-            <Route path="/">
+            <Route path="/login">
                 <Auth />
             </Route>
 

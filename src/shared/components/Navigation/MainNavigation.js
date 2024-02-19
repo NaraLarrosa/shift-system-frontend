@@ -1,53 +1,3 @@
-// import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
-
-// import MainHeader from './MainHeader';
-// import NavLinks from './NavLinks';
-// import SideDrawer from './SideDrawer';
-// import './MainNavigation.css';
-
-// const MainNavigation = props => {
-//   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
-
-//   const openDrawerHandler = () => {
-//     setDrawerIsOpen(true);
-//   };
-
-//   const closeDrawerHandler = () => {
-//     setDrawerIsOpen(false);
-//   };
-
-//   return (
-//     <React.Fragment>
-//       <SideDrawer show={drawerIsOpen} onClick={closeDrawerHandler}>
-//         <nav className="main-navigation__drawer-nav">
-//           <NavLinks />
-//         </nav>
-//       </SideDrawer>
-
-//       <MainHeader>
-//         <button
-//           className="main-navigation__menu-btn"
-//           onClick={openDrawerHandler}
-//         >
-//           <span />
-//           <span />
-//           <span />
-//         </button>
-//         <h1 className="main-navigation__title">
-//           <Link to="/">SHIFT SYSTEM</Link>
-//         </h1>
-//         <nav className="main-navigation__header-nav">
-//           <NavLinks />
-//         </nav>
-//       </MainHeader>
-//     </React.Fragment>
-//   );
-// };
-
-// export default MainNavigation;
-
-
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, Typography, Switch, Link as MuiLink } from '@mui/material';
@@ -142,7 +92,12 @@ const MainNavigation = (props) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}> My account </MenuItem>
+                <MenuItem 
+                  onClick={handleClose} 
+                  component={RouterLink} 
+                  to="/user-item"
+                  >My account 
+                </MenuItem>
               </Menu>
             </div>
           )}
